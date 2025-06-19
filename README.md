@@ -42,3 +42,42 @@ void print_usernames(){
 	pclose(file);
 }
 ```
+
+# Завдання 9.2
+
+## Опис
+
+Ця програма демонструє, як звичайний користувач може виконати адміністративну команду (`cat /etc/shadow`) за допомогою `sudo`, якщо конфігурація системи це дозволяє.
+> ⚠Файл `/etc/shadow` зберігає хеші паролів усіх користувачів системи і зазвичай захищений від читання. Тому команда потребує прав суперкористувача.
+
+---
+
+## Реалізація 
+
+``` C
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+
+void shadow();
+
+int main(){
+        shadow();
+        return 0;
+}
+
+void shadow(){
+        FILE *file = popen("sudo cat /etc/shadow", "r");
+        if (!file){
+                printf("error running the command");
+                return;
+        }
+        char line[256];
+        while(fgets(line, sizeof(line), file)){
+        	printf("%s", line);
+        }
+        pclose(file);
+}
+```
